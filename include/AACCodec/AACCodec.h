@@ -92,7 +92,7 @@ public:
     int aot = 2;
     bool afterburner = false;
     int eld_sbr = 0;
-    HANDLE_AACENCODER handle;
+    // HANDLE_AACENCODER handle;
     CHANNEL_MODE mode;
     AACENC_InfoStruct info = { 0 };
     // loop variables

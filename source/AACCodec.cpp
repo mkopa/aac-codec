@@ -276,7 +276,7 @@ std::string AACCodec::aacEncodeB64(std::string pcmB64) {
 	out_buf.bufSizes = &out_size;
 	out_buf.bufElSizes = &out_elem_size;
 	
-	err = aacEncEncode(handle, &in_buf, &out_buf, &in_args, &out_args);
+	err = aacEncEncode(_h.enc, &in_buf, &out_buf, &in_args, &out_args);
 	if (err != AACENC_OK) {
 		// error
 		// TODO! free(in_ptr);
