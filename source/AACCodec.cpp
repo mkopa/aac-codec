@@ -32,8 +32,8 @@ std::string AACCodec::greet(LanguageCode lang) const {
 }
 
 std::string AACCodec::base64test(string src) {
-	std::string encoded = base64_encode((const std::string) src);
-	return base64_decode(encoded);
+	std::string decoded = base64_decode((const std::string) src);
+	return base64_encode(decoded);
 }
 
 int32_t AACCodec::sumArrayInt32 (int8_t *array, int32_t length) {
