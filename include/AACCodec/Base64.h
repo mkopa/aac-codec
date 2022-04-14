@@ -12,6 +12,10 @@
 #include <string_view>
 #endif  // __cplusplus >= 201703L
 
+int FromBase64Fast( const uint8_t* pSrc, int nLenSrc, uint8_t* pDst, int nLenDst );
+// int ToBase64Fast( const uint8_t* pSrc, int nLenSrc, char* pDst, int nLenDst );
+std::string ToBase64Fast( const uint8_t* pSrc, int nLenSrc);
+
 std::string base64_encode     (std::string const& s, bool url = false);
 std::string base64_encode_pem (std::string const& s);
 std::string base64_encode_mime(std::string const& s);

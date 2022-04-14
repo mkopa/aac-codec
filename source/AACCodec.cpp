@@ -32,8 +32,26 @@ std::string AACCodec::greet(LanguageCode lang) const {
 }
 
 std::string AACCodec::base64test(string src) {
-	std::string decoded = base64_decode((const std::string) src);
-	return base64_encode(decoded);
+
+	std::vector<uint8_t> srcInput(src.begin(), src.end());
+	uint8_t byteArray[srcInput.size() * 2];
+
+	int byteArraySize = FromBase64Fast(&srcInput[0], srcInput.size(), byteArray, srcInput.size() * 2);
+
+	// std::string decoded = base64_decode((const std::string) src);
+	// std::vector<uint8_t> byteArray(decoded.begin(), decoded.end());
+	uint32_t sum = 0;
+	for(int i = 0; i < byteArraySize; i++) {
+		sum += byteArray[i];
+	}
+	uint8_t numberStr[4];
+    memcpy(numberStr, &sum, 4);  //780 //0x30C
+	// return fmt::format("Suma: {}", sum);
+
+	// ToBase64Fast(numberStr, 4, );
+	// return base64_encode((const unsigned char *)numberStr, 4, false);
+	return ToBase64Fast((const unsigned char *)numberStr, 4);
+	// return base64_encode(decoded);
 }
 
 int32_t AACCodec::sumArrayInt32 (int8_t *array, int32_t length) {
@@ -63,7 +81,7 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
 	_h.sample_rate = sampleRate;
 	_h.bitrate = bitRate;
 
-	int trans_mux = 2; // adts
+	int trans_mux = TT_MP4_ADTS;//2; // adts
 	int signaling = 2; // Implicit backward compatible signaling (default for ADIF and ADTS)
 	int afterburner = 0; // 1 or 0(default)
 
@@ -123,18 +141,30 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
         return err;
     }
 
+	// if ((err = aacEncoder_SetParam(_h.enc, AACENC_HEADER_PERIOD, 1)) != AACENC_OK) {
+    //     return err;
+    // }
+
+	// if ((err = aacEncoder_SetParam(_h.enc, AACENC_METADATA_MODE, 1)) != AACENC_OK) {
+    //     return err;
+    // }
+	// if ((err = aacEncoder_SetParam(_h.enc, AACENC_PROTECTION, 1)) != AACENC_OK) {
+    //     return err;
+    // }
+
 	if ((err = aacEncEncode(_h.enc, NULL, NULL, NULL, NULL)) != AACENC_OK) {
         return err;
     }
 
     
 
-    AACENC_InfoStruct info = {0};
+    // AACENC_InfoStruct 
+	info = {0};
     if ((err = aacEncInfo(_h.enc, &info)) != AACENC_OK) {
     	return err;
     }
 
-    _h.frame_size = info.frameLength;
+    // _h.frame_size = info.frameLength;
 
 	outbuf = new uint8_t[out_size];
 
@@ -239,12 +269,17 @@ std::string AACCodec::aacEncodeB64(std::string pcmB64) {
 		// if (aacSize > 0) {
 		// 	out_aac.write(aac_buf.data(), aacSize);
 		// }
-	std::string pcmDecoded = base64_decode((const std::string)pcmB64);
-    std::vector<uint8_t> pcmV(pcmDecoded.begin(), pcmDecoded.end());
+	std::vector<uint8_t> srcInput(pcmB64.begin(), pcmB64.end());
+	uint8_t byteArray[srcInput.size() * 2];
+	int byteArraySize = FromBase64Fast(&srcInput[0], srcInput.size(), byteArray, srcInput.size() * 2);
+	// std::vector<uint8_t> pcmV(byteArray, byteArraySize);
+
+	// std::string pcmDecoded = base64_decode((const std::string)pcmB64);
+    // std::vector<uint8_t> pcmV(pcmDecoded.begin(), pcmDecoded.end());
 	// const uint8_t* in_ptr_const = reinterpret_cast<const uint8_t*>(name.c_str());
     int i;
-    uint8_t *in_ptr =  &pcmV[0];//pcmV.data();
-	int in_size = pcmV.size();
+    uint8_t *in_ptr = &byteArray[0];//pcmV.data();
+	int in_size = byteArraySize;
     // in_ptr = pcmV.data();//&inbuf[0];//(uint8_t*) malloc(in_size);
 
 	// for (i = 0; i < in_size; i++) {
@@ -288,7 +323,8 @@ std::string AACCodec::aacEncodeB64(std::string pcmB64) {
 	}
 
 	if (out_args.numOutBytes) {
-		return base64_encode(std::string(reinterpret_cast<char const*>(outbuf), out_args.numOutBytes));
+		return ToBase64Fast(&outbuf[0], out_args.numOutBytes);
+		// return base64_encode(outbuf, out_args.numOutBytes, false);
 	}
 
 	return "";
