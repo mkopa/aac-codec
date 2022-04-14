@@ -13,6 +13,7 @@ TEST_CASE("AACCodec") {
   CHECK(codec.greet(LanguageCode::DE) == "Hallo Tests!");
   CHECK(codec.greet(LanguageCode::ES) == "¡Hola Tests!");
   CHECK(codec.greet(LanguageCode::FR) == "Bonjour Tests!");
+  
 }
 
 TEST_CASE("AACCodec version") {

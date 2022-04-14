@@ -187,9 +187,14 @@ size_t AACCodec::b64_decode(std::string src) {
 }
 
 std::string AACCodec::greet(LanguageCode lang) const {
+//   dec[0]=1;
+//   dec[1]=2;
+//   dec[2]=3;
+//   std::string ret = AACCodec::b64_encode((uint8_t *)dec, (size_t)3);	
   switch (lang) {
     default:
     case LanguageCode::EN:
+	// return ret;
       return fmt::format("Hello AACCodec lib works ok!, {}!", name);
     case LanguageCode::DE:
       return fmt::format("Hallo {}!", name);

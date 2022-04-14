@@ -12,8 +12,6 @@
 namespace aaccodec {
 
 using namespace std;
-
-
 static const char b64_table[] = {
       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
       'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -24,10 +22,11 @@ static const char b64_table[] = {
       'w', 'x', 'y', 'z', '0', '1', '2', '3',
       '4', '5', '6', '7', '8', '9', '+', '/'
     };
-
-
+    
   class aacenc_t {
 public:
+
+
 	// the encoder handler.
 	HANDLE_AACENCODER enc;
 
@@ -75,6 +74,8 @@ public:
     size_t b64_decode (std::string src);
   private:
     aacenc_t _h;
+
+    
     uint8_t dec[1024*64];
   };
 
