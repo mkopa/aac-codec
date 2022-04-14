@@ -8,8 +8,10 @@ using namespace aaccodec;
 using namespace std;
 
 
-AACCodec::AACCodec(std::string _name) : name(std::move(_name)) {}
+// AACCodec::AACCodec(std::string _name) : name(std::move(_name)) {}
+AACCodec::AACCodec()  {}
 
+const char *AACCodec::b64_table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 // std::string base64_encode(const unsigned char *data,
 //                     size_t input_length,
 //                     size_t *output_length) {

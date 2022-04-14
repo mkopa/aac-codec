@@ -12,17 +12,7 @@
 namespace aaccodec {
 
 using namespace std;
-static const char b64_table[] = {
-      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-      'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-      'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-      'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-      'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-      'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-      'w', 'x', 'y', 'z', '0', '1', '2', '3',
-      '4', '5', '6', '7', '8', '9', '+', '/'
-    };
-    
+
   class aacenc_t {
 public:
 
@@ -49,13 +39,12 @@ public:
    */
   class AACCodec {
     std::string name;
-
   public:
     /**
      * @brief Creates a new AACCodec
      * @param name the name to greet
      */
-    AACCodec(std::string name);
+    AACCodec();
 
     /**
      * @brief Creates a localized string containing the greeting
@@ -77,6 +66,7 @@ public:
 
     
     uint8_t dec[1024*64];
+    static const char *b64_table;
   };
 
 }  // namespace aaccodec

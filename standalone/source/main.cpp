@@ -46,8 +46,8 @@ auto main(int argc, char** argv) -> int {
     return 1;
   }
 
-  aaccodec::AACCodec codec(name);
-  std::cout << codec.greet(langIt->second) << std::endl;
+  aaccodec::AACCodec codec();
+  // std::cout << codec.greet(langIt->second) << std::endl;
 
   return 0;
 }
