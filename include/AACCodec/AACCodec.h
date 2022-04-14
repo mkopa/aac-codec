@@ -83,6 +83,36 @@ public:
     std::string aacEncodeB64(std::string pcmB64);
   private:
     aacenc_t _h;
+  protected:
+    // common variables
+    int vbr = 1; // variable bitrate mode
+    int bitrate = 0; // automatic determination
+    int ch = 0;
+    int format, sample_rate, channels=2, bits_per_sample;
+    int aot = 2;
+    bool afterburner = false;
+    int eld_sbr = 0;
+    HANDLE_AACENCODER handle;
+    CHANNEL_MODE mode;
+    AACENC_InfoStruct info = { 0 };
+    // loop variables
+    AACENC_BufDesc in_buf = { 0 }, out_buf = { 0 };
+    AACENC_InArgs in_args = { 0 };
+    AACENC_OutArgs out_args = { 0 };
+    int in_identifier = IN_AUDIO_DATA;
+    int in_elem_size;
+    int out_identifier = OUT_BITSTREAM_DATA;
+    int out_elem_size=1;
+    uint8_t* outbuf = nullptr;
+    // uint8_t inbuf[2048];
+    int out_size = 2048;
+    AACENC_ERROR err;
+    bool active = false;
+    // AACCallbackFDK aacCallback=nullptr;
+    UINT encModules = 0x01; 
+    UINT openEncModules = 0; 
+    int openChannels = 1;
+    int sce=1, cpe=0; // for bitrate determination
   };
 
 }  // namespace aaccodec
