@@ -61,6 +61,7 @@ public:
 
     std::string b64_encode (const uint8_t * src, size_t len);
     size_t b64_decode (std::string src);
+    std::string b64_test (std::string src);
   private:
     aacenc_t _h;
 

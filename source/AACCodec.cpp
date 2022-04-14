@@ -15,6 +15,10 @@ const char *AACCodec::b64_table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrs
 // std::string base64_encode(const unsigned char *data,
 //                     size_t input_length,
 //                     size_t *output_length) {
+std::string AACCodec::b64_test(std:: string src) {
+	int len = b64_decode(src);
+  return b64_encode(dec, len);
+}
 std::string AACCodec::b64_encode (const uint8_t *src, size_t len) {
   int i = 0;
   int j = 0;
@@ -84,7 +88,8 @@ std::string AACCodec::b64_encode (const uint8_t *src, size_t len) {
   enc = (char *) realloc(enc, size + 1);
   enc[size] = '\0';
 
-  return std::string(enc);
+  // return std::string(enc);
+  return "hehehe";
 }
 
 size_t AACCodec::b64_decode(std::string src) {
