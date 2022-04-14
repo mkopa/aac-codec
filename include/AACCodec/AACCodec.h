@@ -15,8 +15,6 @@ using namespace std;
 
   class aacenc_t {
 public:
-
-
 	// the encoder handler.
 	HANDLE_AACENCODER enc;
 
@@ -58,16 +56,9 @@ public:
     int aacenc_frame_size();
     int aacenc_encode(char *pcm, int nb_pcm, int nb_samples, char *aac, int &pnb_aac);
     void aacenc_close();
-
-    std::string b64_encode (const uint8_t * src, size_t len);
-    size_t b64_decode (std::string src);
-    std::string b64_test (std::string src);
+    std::string base64test(std::string src);
   private:
     aacenc_t _h;
-
-    
-    uint8_t dec[1024*64];
-    static const char *b64_table;
   };
 
 }  // namespace aaccodec

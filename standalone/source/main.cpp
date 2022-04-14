@@ -47,6 +47,9 @@ auto main(int argc, char** argv) -> int {
   }
 
   aaccodec::AACCodec codec();
+
+using namespace aaccodec;
+  // std::cout << codec.b64_test("dupa");
   // std::cout << codec.greet(langIt->second) << std::endl;
 
   return 0;
