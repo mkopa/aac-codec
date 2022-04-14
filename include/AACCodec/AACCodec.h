@@ -31,6 +31,28 @@ public:
 
   /**  Language codes to be used with the AACCodec class */
   enum class LanguageCode { EN, DE, ES, FR };
+  /*!< Audio object type. See ::AUDIO_OBJECT_TYPE in FDK_audio.h.
+                   - 2: MPEG-4 AAC Low Complexity.
+                   - 5: MPEG-4 AAC Low Complexity with Spectral Band Replication
+                 (HE-AAC).
+                   - 29: MPEG-4 AAC Low Complexity with Spectral Band
+                 Replication and Parametric Stereo (HE-AAC v2). This
+                 configuration can be used only with stereo input audio data.
+                   - 23: MPEG-4 AAC Low-Delay.
+                   - 39: MPEG-4 AAC Enhanced Low-Delay. Since there is no
+                 ::AUDIO_OBJECT_TYPE for ELD in combination with SBR defined,
+                 enable SBR explicitely by ::AACENC_SBR_MODE parameter. The ELD
+                 v2 212 configuration can be configured by ::AACENC_CHANNELMODE
+                 parameter.
+                   - 129: MPEG-2 AAC Low Complexity.
+                   - 132: MPEG-2 AAC Low Complexity with Spectral Band
+                 Replication (HE-AAC).
+
+                   Please note that the virtual MPEG-2 AOT's basically disables
+                 non-existing Perceptual Noise Substitution tool in AAC encoder
+                 and controls the MPEG_ID flag in adts header. The virtual
+                 MPEG-2 AOT doesn't prohibit specific transport formats. */
+  enum class AudioObjectType { LC_MPEG4 = 2 };
 
   /**
    * @brief A class for saying hello in multiple languages
@@ -57,6 +79,8 @@ public:
     int aacenc_encode(char *pcm, int nb_pcm, int nb_samples, char *aac, int &pnb_aac);
     void aacenc_close();
     std::string base64test(std::string src);
+    int aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate);
+    std::string aacEncodeB64(std::string pcmB64);
   private:
     aacenc_t _h;
   };
