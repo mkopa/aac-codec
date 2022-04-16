@@ -64,15 +64,6 @@ int32_t AACCodec::sumArrayInt32 (int8_t *array, int32_t length) {
     return total;
 }
 
-// int32_t AACCodec::sumArrayInt32(vector<int32_t> array) {
-//     int total = 0;
-
-// 	for (int n : array) {
-//         total += n;
-//     }
-
-//     return total;
-// }
 int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate) {
   	AACENC_ERROR err = AACENC_OK;
 
@@ -133,9 +124,9 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
         return err;
     }
 
-    // if ((err = aacEncoder_SetParam(_h.enc, AACENC_SIGNALING_MODE, signaling)) != AACENC_OK) {
-    //     return err;
-    // }
+    if ((err = aacEncoder_SetParam(_h.enc, AACENC_SIGNALING_MODE, signaling)) != AACENC_OK) {
+        return err;
+    }
 
     if ((err = aacEncoder_SetParam(_h.enc, AACENC_AFTERBURNER, afterburner)) != AACENC_OK) {
         return err;
@@ -167,132 +158,17 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
     // _h.frame_size = info.frameLength;
 
 	outbuf = new uint8_t[out_size];
-
-	// int pcmSize = channels * 2 * fdkaac_enc.aacenc_frame_size();
-	// std::vector<char> pcm_buf(pcmSize, 0);
-	// int nbSamples = fdkaac_enc.aacenc_frame_size();
-	// int nbAac = fdkaac_enc.aacenc_max_output_buffer_size();
-	// std::vector<char> aac_buf(nbAac, 0);
 	return err;
 }
 
-
-// std::string AACCodec::aacEncodeB64(char *pcm, int nb_pcm, int nb_samples, char *aac, int &pnb_aac) {
-// std::string AACCodec::aacEncodeB64(std::string pcmB64) {
-
-// 		// if ((err = fdkaac_enc.aacenc_encode(&pcm_buf[0], read, nbSamples, &aac_buf[0], aacSize)) != AACENC_OK) {
-// 		// 	cout << "error code:" << err << endl;
-// 		// }
-
-// 		// if (aacSize > 0) {
-// 		// 	out_aac.write(aac_buf.data(), aacSize);
-// 		// }
-// 	std::string pcmDecoded = base64_decode((const std::string)pcmB64);
-//     std::vector<uint8_t> pcmV(pcmDecoded.begin(), pcmDecoded.end());
-    
-
-// 	uint8_t *pcm =  &pcmV[0];//strdup()
-// 	uint8_t aacBuff[1024];
-// 	uint8_t *aac = aacBuff;
-
-// 	AACENC_ERROR err = AACENC_OK;
-//     INT iidentify = IN_AUDIO_DATA;
-//     INT oidentify = OUT_BITSTREAM_DATA;
-// 	INT ibuffer_element_size = 2; // 16bits.
-// 	// INT ibuffer_size = 2 * _h.channels * nb_samples;
-// 	INT ibuffer_size = _h.channels * pcmV.size();
-
-// 	// The intput pcm must be resampled to fit the encoder,
-// 	// for example, the intput is 2channels but encoder is 1channels,
-// 	// then we should resample the intput pcm to 1channels
-// 	// to make the intput pcm size equals to the encoder calculated size(ibuffer_size).
-// 	// std::cout << ibuffer_size << std::endl;
-
-// 	// if (ibuffer_size != nb_pcm) {
-// 	// 	return -1;
-// 	// }
-
-// 	AACENC_BufDesc ibuf = {0};
-// 	if (pcmV.size() > 0) {
-// 		ibuf.numBufs = 1;
-// 		ibuf.bufs = (void**)&pcm;
-// 		ibuf.bufferIdentifiers = &iidentify;
-// 		ibuf.bufSizes = &ibuffer_size;
-// 		ibuf.bufElSizes = &ibuffer_element_size;
-// 	}
-// 	AACENC_InArgs iargs = {0};
-// 	if (pcmV.size() > 0) {
-// 		// iargs.numInSamples =  _h.channels * nb_samples;
-// 		iargs.numInSamples = ibuffer_size / 2;// _h.channels * nb_samples;
-// 	} else {
-// 		iargs.numInSamples = -1;
-// 	}
-// 	INT obuffer_element_size = 1;
-// 	INT obuffer_size = 1024;//pnb_aac;
-// 	AACENC_BufDesc obuf = {0};
-// 	obuf.numBufs = 1;
-// 	obuf.bufs = (void**)&aac;
-// 	obuf.bufferIdentifiers = &oidentify;
-// 	obuf.bufSizes = &obuffer_size;
-// 	obuf.bufElSizes = &obuffer_element_size;
-// 	AACENC_OutArgs oargs = {0};
-
-
-
-// 	if ((err = aacEncEncode(_h.enc, &ibuf, &obuf, &iargs, &oargs)) != AACENC_OK) {
-// 		// Flush ok, no bytes to output anymore.
-// 		if (!pcm && err == AACENC_ENCODE_EOF) {
-// 			// pnb_aac = 0;
-// 			if (oargs.numOutBytes) {
-// 				return base64_encode(std::string((char *)aacBuff, oargs.numOutBytes));
-// 			}
-// 			return "";
-// 		}
-// 		return "error";
-// 	}
-// 	if (oargs.numOutBytes) {
-// 		return base64_encode(std::string((char *)aacBuff, oargs.numOutBytes));
-// 	}
-
-// 	return "";
-// 	// pnb_aac = oargs.numOutBytes;
-
-// 	// return err;
-// }
-
 std::string AACCodec::aacEncodeB64(std::string pcmB64) {
-
-		// if ((err = fdkaac_enc.aacenc_encode(&pcm_buf[0], read, nbSamples, &aac_buf[0], aacSize)) != AACENC_OK) {
-		// 	cout << "error code:" << err << endl;
-		// }
-
-		// if (aacSize > 0) {
-		// 	out_aac.write(aac_buf.data(), aacSize);
-		// }
 	std::vector<uint8_t> srcInput(pcmB64.begin(), pcmB64.end());
 	uint8_t byteArray[srcInput.size() * 2];
 	int byteArraySize = FromBase64Fast(&srcInput[0], srcInput.size(), byteArray, srcInput.size() * 2);
-	// std::vector<uint8_t> pcmV(byteArray, byteArraySize);
 
-	// std::string pcmDecoded = base64_decode((const std::string)pcmB64);
-    // std::vector<uint8_t> pcmV(pcmDecoded.begin(), pcmDecoded.end());
-	// const uint8_t* in_ptr_const = reinterpret_cast<const uint8_t*>(name.c_str());
     int i;
     uint8_t *in_ptr = &byteArray[0];//pcmV.data();
 	int in_size = byteArraySize;
-    // in_ptr = pcmV.data();//&inbuf[0];//(uint8_t*) malloc(in_size);
-
-	// for (i = 0; i < in_size; i++) {
-	// 	in_ptr[i] = in_ptr_const[i];
-	// }
-
-	// const uint8_t* in_ptr = reinterpret_cast<const uint8_t*>(&pcmDecoded[0]);
-
-	// uint8_t *pcm =  &pcmV[0];//strdup()
-	// uint8_t aacBuff[2048];
-	// uint8_t *aac = aacBuff;
-
-
 	
 	in_elem_size = 2;
 	AACENC_InArgs in_args = { 0 };
