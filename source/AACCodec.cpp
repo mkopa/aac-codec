@@ -64,7 +64,7 @@ int32_t AACCodec::sumArrayInt32 (int8_t *array, int32_t length) {
     return total;
 }
 
-int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate) {
+int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate, int bitRateMode) {
   	AACENC_ERROR err = AACENC_OK;
 
 	_h.aot = audioObjectType;
@@ -111,14 +111,15 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
         return err;
     }
 
-	if ((err = aacEncoder_SetParam(_h.enc, AACENC_BITRATEMODE, 0)) != AACENC_OK) {
+	if ((err = aacEncoder_SetParam(_h.enc, AACENC_BITRATEMODE, bitRateMode)) != AACENC_OK) {
         return err;
     }
 
-
-    if ((err = aacEncoder_SetParam(_h.enc, AACENC_BITRATE, bitRate)) != AACENC_OK) {
-        return err;
-    }
+	if (!bitRateMode) {
+		if ((err = aacEncoder_SetParam(_h.enc, AACENC_BITRATE, bitRate)) != AACENC_OK) {
+			return err;
+		}
+	}
 
     if ((err = aacEncoder_SetParam(_h.enc, AACENC_TRANSMUX, trans_mux)) != AACENC_OK) {
         return err;
