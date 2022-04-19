@@ -52,7 +52,15 @@ public:
                  non-existing Perceptual Noise Substitution tool in AAC encoder
                  and controls the MPEG_ID flag in adts header. The virtual
                  MPEG-2 AOT doesn't prohibit specific transport formats. */
-  enum class AudioObjectType { LC_MPEG4 = 2 };
+  enum class AudioObjectType { 
+    LC_MPEG4 = 2,
+    LC_SBR_MPEG4 = 5,
+    LC_SBRV2_MPEG4 = 29,
+    LD_MPEG4 = 23,
+    ELD_MPEG4 = 39,
+    LC_MPEG2 = 129,
+    LC_SBR_MPEG2 = 132
+  };
 
   /**
    * @brief A class for saying hello in multiple languages
