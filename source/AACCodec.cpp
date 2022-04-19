@@ -74,7 +74,7 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
 
 	int trans_mux = TT_MP4_ADTS;//2; // adts
 	int signaling = 2; // Implicit backward compatible signaling (default for ADIF and ADTS)
-	int afterburner = 0; // 1 or 0(default)
+	int afterburner = 1; // 1 or 0(default)
 
 	CHANNEL_MODE mode = MODE_INVALID;
     switch (channels) {
