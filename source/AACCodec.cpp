@@ -88,7 +88,7 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
 			return 1;
 	}
 
-	if ((err = aacEncOpen(&_h.enc, 0x01, channels)) != AACENC_OK) {
+	if ((err = aacEncOpen(&_h.enc, 0x03, channels)) != AACENC_OK) {
         return err;
     }
 

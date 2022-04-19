@@ -117,7 +117,7 @@ public:
     AACENC_ERROR err;
     bool active = false;
     // AACCallbackFDK aacCallback=nullptr;
-    UINT encModules = 0x01; 
+    UINT encModules = 3; 
     UINT openEncModules = 0; 
     int openChannels = 1;
     int sce=1, cpe=0; // for bitrate determination
