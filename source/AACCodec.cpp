@@ -64,7 +64,7 @@ int32_t AACCodec::sumArrayInt32 (int8_t *array, int32_t length) {
     return total;
 }
 
-int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate, int bitRateMode) {
+int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate, int bitRateMode, int trans_mux) {
   	AACENC_ERROR err = AACENC_OK;
 
 	_h.aot = audioObjectType;
@@ -72,7 +72,7 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
 	_h.sample_rate = sampleRate;
 	_h.bitrate = bitRate;
 
-	int trans_mux = TT_MP4_ADTS;//2; // adts
+	//int trans_mux = TT_MP4_ADTS;//2; // adts
 	int signaling = 2; // Implicit backward compatible signaling (default for ADIF and ADTS)
 	int afterburner = 1; // 1 or 0(default)
 
@@ -88,7 +88,7 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
 			return 1;
 	}
 
-	if ((err = aacEncOpen(&_h.enc, 0x03, channels)) != AACENC_OK) {
+	if ((err = aacEncOpen(&_h.enc, 0x0, channels)) != AACENC_OK) {
         return err;
     }
 

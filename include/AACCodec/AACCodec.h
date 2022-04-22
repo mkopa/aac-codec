@@ -87,7 +87,7 @@ public:
     int aacenc_encode(char *pcm, int nb_pcm, int nb_samples, char *aac, int &pnb_aac);
     void aacenc_close();
     std::string base64test(std::string src);
-    int aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate, int bitRateMode);
+    int aacEncoderInit(int audioObjectType, int channels, int sampleRate, int bitRate, int bitRateMode, int trans_mux);
     std::string aacEncodeB64(std::string pcmB64);
   private:
     aacenc_t _h;
