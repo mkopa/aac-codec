@@ -88,7 +88,7 @@ int AACCodec::aacEncoderInit(int audioObjectType, int channels, int sampleRate, 
 			return 1;
 	}
 
-	if ((err = aacEncOpen(&_h.enc, 0x0, channels)) != AACENC_OK) {
+	if ((err = aacEncOpen(&_h.enc, 0x00, channels)) != AACENC_OK) {
         return err;
     }
 
@@ -380,4 +380,64 @@ int AACCodec::aacenc_max_output_buffer_size()
 	}
 	
 	return out_buffer_size;
+}
+
+
+int AACCodec::aacDecoderInit(int output_buffer_size=2048) {
+    this->output_buffer_size = output_buffer_size;
+    // allocate buffer only once
+    if (output_buffer==nullptr){
+        output_buffer = new INT_PCM[output_buffer_size];
+        byteArray = new uint8_t[byteArrayLength];
+    }
+    fdkaac_dec.aacdec_init_adts();
+    return 0;
+}
+
+std::string AACCodec::aacDecodeB64(std::string pcmB64) {
+    std::vector<uint8_t> aac_buf(pcmB64.begin(), pcmB64.end());
+	int byteArraySize = FromBase64Fast(&aac_buf[0], aac_buf.size(), byteArray, byteArrayLength);
+
+
+    adts_header_t *adts = (adts_header_t *)(&byteArray[0]);
+
+    if (adts->syncword_0_to_8 != 0xff || adts->syncword_9_to_12 != 0xf) {
+		return "101";
+	}
+
+	int aac_frame_size = adts->frame_length_0_to_1 << 11 | adts->frame_length_2_to_9 << 3 | adts->frame_length_10_to_12;
+
+    if (aac_frame_size > byteArraySize) {
+        return "102";
+
+    }
+
+    int leftSize = aac_frame_size;
+    int ret = fdkaac_dec.aacdec_fill((char *)byteArray, aac_frame_size, &leftSize);
+
+    if (ret != 0) {
+        return "103";
+    }
+
+    if (leftSize > 0) {
+        return "105";
+    }
+
+    int validSize = 0;
+    ret = fdkaac_dec.aacdec_decode_frame((char *)output_buffer, output_buffer_size * 2, &validSize);
+
+    if (ret == AAC_DEC_NOT_ENOUGH_BITS) {
+        return"106";
+    }
+
+    if (ret != 0) {
+        return "107";
+    }
+
+
+    if (fdkaac_dec.aacdec_sample_rate() <= 0) {
+        return "108";
+    }
+
+    return ToBase64Fast((const uint8_t *)output_buffer, validSize * 2);
 }
