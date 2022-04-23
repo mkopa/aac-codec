@@ -439,5 +439,5 @@ std::string AACCodec::aacDecodeB64(std::string pcmB64) {
         return "108";
     }
 
-    return ToBase64Fast((const uint8_t *)output_buffer, validSize * 2);
+    return ToBase64Fast((const uint8_t *)output_buffer, validSize);
 }
